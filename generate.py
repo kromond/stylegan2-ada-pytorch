@@ -91,9 +91,12 @@ def size_range(s: str) -> List[int]:
     '''Accept a range 'a-c' and return as a list of 2 ints.'''
     return [int(v) for v in s.split('-')][::-1]
 
-def line_interpolate(zs, steps, easing):
+def line_interpolate(zs, steps, easing, hold=True, hold_length=24):
     out = []
     for i in range(len(zs)-1):
+        if (hold):
+            for r in range(hold_length):
+                out.append(zs[i])
         for index in range(steps):
             t = index/float(steps)
 
@@ -166,8 +169,8 @@ def images(G,device,inputs,space,truncation_psi,label,noise_mode,outdir,start=No
             img = G.synthesis(i, noise_mode=noise_mode, force_fp32=True)
         img = (img.permute(0, 2, 3, 1) * 127.5 + 128).clamp(0, 255).to(torch.uint8)
         PIL.Image.fromarray(img[0].cpu().numpy(), 'RGB').save(f'{outdir}/frame{idx:04d}.png')
-
-def interpolate(G,device,projected_w,seeds,random_seed,space,truncation_psi,label,frames,noise_mode,outdir,interpolation,easing,diameter,start=None,stop=None):
+def interpolate(G,device,projected_w,seeds,random_seed,space,truncation_psi,label,frames,noise_mode,outdir,interpolation,
+    easing,diameter, start=None,stop=None, hold=False, hold_length=10):
     if(interpolation=='noiseloop' or interpolation=='circularloop'):
         if seeds is not None:
             print(f'Warning: interpolation type: "{interpolation}" doesn’t support set seeds.')
@@ -189,7 +192,7 @@ def interpolate(G,device,projected_w,seeds,random_seed,space,truncation_psi,labe
 
         # get interpolation points
         if(interpolation=='linear'):
-            points = line_interpolate(points,frames,easing)
+            points = line_interpolate(points,frames,easing, hold=hold, hold_length=hold_length)
         elif(interpolation=='slerp'):
             if(space=='w'):
                 print(f'Slerp currently isn’t supported in w space. Working on it!')

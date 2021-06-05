@@ -4,7 +4,7 @@ import os, datetime
 ###########################################
 ## Generate Random seeds here
 
-numberOfSeeds = 1000
+numberOfSeeds = 8
 seeds = np.random.randint(100000, size=numberOfSeeds)
 # seeds = [24880,61744,28319,66648,19560,80782,64862] #57
 
@@ -13,7 +13,7 @@ seeds = np.random.randint(100000, size=numberOfSeeds)
 # seeds = [63817,23893,8727]
 ############################################
 ## Change options below here
-loop = 0
+loop = 1
 
 if loop:
     # seeds[len(seeds)-1] = seeds[0]  # make the last seed same as the first, so it loops
@@ -23,25 +23,25 @@ print("seeds: %s" % seeds)
 # seeds = None  # not all options require seeds
 
 process='interpolation'  # 'image', 'interpolation','truncation','interpolation-truncation'
-process = "image"
-interpolation='linear' # 'linear', 'slerp', 'noiseloop', 'circularloop'
+# process = "image"
+interpolation='circularloop' # 'linear', 'slerp', 'noiseloop', 'circularloop'
 
-frames = 40  # 'how many frames to produce (with seeds this is frames between each step, with loops this is total length)'
+frames = 300  # 'how many frames to produce (with seeds this is frames between each step, with loops this is total length)'
 
 noise_mode='const'  # 'const', 'random', 'none'
-diameter = 300  # this is for circularloop interposation
+diameter = 400  # this is for circularloop interposation
 space = 'z'  # the latgent space.  Can be 'z' or 'w'.  Not all options work with 'w'
 # seeds = np.random.randint(10000000, size=2)
 random_seed = seeds[0]
 fps = 24  # fps of the resulting movie file
-truncation_psi = 1.0
+truncation_psi = .8
 easing = 'linear' # 'linear', 'easeInOutQuad', 'bounceEaseOut','circularEaseOut','circularEaseOut2'
-hold = True
-hold_len = 24
+hold = False
+hold_len = 8
 ##################
 # network_pkl = r"T:\projects\other\stylegan2_ada_shin\stylegan2-ada-pytorch_dvschultz\results\00033-demonHeads-mirror-11gb-gpu-resumeffhq512\demonHeads-snapshot-000160.pkl"
-network_pkl = r"T:\projects\other\stylegan2_ada_shin\stylegan2-ada-pytorch_dvschultz\results\00026-catheads-mirror-11gb-gpu-resumeffhq512\network-snapshot-000400.pkl"
-checkpoint_name = 'catHeads_400'  # this is for the folder name to go with this pkl
+network_pkl = r"T:\projects\other\stylegan2_ada_shin\stylegan2-ada-pytorch-dvshultz-fork\results\00037-pinupSubset2-mirror-11gb-gpu-bg-resumecustom\network-snapshot-001780.pkl"
+checkpoint_name = 'pinups2_1780'  # this is for the folder name to go with this pkl
 ###################
 outdir = 'out'  # this is where to write output too
 ###################
